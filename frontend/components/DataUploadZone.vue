@@ -2,7 +2,7 @@
   <section class="space-y-2">
     <div
       ref="dropZoneRef"
-      class="flex text-sm h-40 cursor-pointer items-center gap-1 justify-center rounded border-gray-600 border bg-gray-50 p-3"
+      class="flex text-sm h-40 cursor-pointer items-center gap-1 justify-center rounded border-gray-600 border bg-gray-100 p-3"
       :class="{ '!border-blue-300 !bg-blue-100': isOverDropZone }"
       @click="open()"
     >
