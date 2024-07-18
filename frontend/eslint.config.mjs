@@ -9,5 +9,10 @@ export default await withNuxt(
     'vue/block-order': ['error', {
       order: ['template', 'script', 'style'],
     }],
+    'vue/max-attributes-per-line': ['error', {
+      singleline: {
+        max: 2,
+      },
+    }],
   },
 })
