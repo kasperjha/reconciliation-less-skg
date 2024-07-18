@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-18',
   eslint: {
     config: {
-      stylistic: true,
+      standalone: false,
     },
   },
 })
