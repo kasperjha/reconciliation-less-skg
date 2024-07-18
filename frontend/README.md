@@ -1,4 +1,3 @@
-
 # Nuxt + Strapi Template
 
 A minimal, preconfigured and opinionated Nuxt+Strapi template that enables getting up and running quickly with strapi and nuxt 🚀

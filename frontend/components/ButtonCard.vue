@@ -1,3 +1,10 @@
+<script lang="ts" setup>
+interface Props {
+  to?: string
+}
+defineProps<Props>()
+</script>
+
 <template>
   <NuxtLink
     :to="to"
@@ -8,10 +15,3 @@
     </button>
   </NuxtLink>
 </template>
-
-<script lang="ts" setup>
-interface Props {
-  to?: string
-}
-defineProps<Props>()
-</script>

@@ -1,3 +1,15 @@
+<script lang="ts" setup>
+interface LabeledLink {
+  label: string
+  url: string
+}
+const heroPageActions: LabeledLink[] = [
+  { label: 'Analysis', url: '/analysis' },
+  { label: 'Ingestion', url: '/ingestion' },
+  { label: 'Collections', url: '/collections' },
+]
+</script>
+
 <template>
   <div>
     <h1>SKG Analysis Framework</h1>
@@ -13,15 +25,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-interface LabeledLink {
-  label: string
-  url: string
-}
-const heroPageActions: LabeledLink[] = [
-  { label: 'Analysis', url: '/analysis' },
-  { label: 'Ingestion', url: '/ingestion' },
-  { label: 'Collections', url: '/collections' },
-]
-</script>
