@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', "@nuxt/icon"],
+  modules: ['@nuxt/eslint', '@nuxt/ui'],
   compatibilityDate: '2024-07-18',
   eslint: {
     config: {
