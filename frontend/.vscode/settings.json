@@ -45,5 +45,30 @@
     "scss",
     "pcss",
     "postcss"
+  ],
+
+  // TODO: add these improvments to my project template
+  // tailwind workspace settings
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // tailwind string utility helper
+  "tailwindCSS.experimental.classRegex": [
+    "tw`(.*?)`",
+    "tw\\('(.*?)'\\)",
+    "tw\\(\\s*('(.*?)'|\"(.*?)\")\\s*\\)"
+  ],
+
+  // tailwind intillisense also on relevant vue props
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "ui"
   ]
+
 }
