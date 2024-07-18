@@ -1,5 +1,6 @@
 <template>
   <div>
-    <h1>Manual samples ingestion</h1>
+    <h1>Manually ingest samples</h1>
+    <DataUploadZone />
   </div>
 </template>
