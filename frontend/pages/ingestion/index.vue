@@ -5,6 +5,7 @@
       <ButtonCard
         class="w-full"
         to="/ingestion/programatic"
+        disabled
       >
         <div>
           Programatic
