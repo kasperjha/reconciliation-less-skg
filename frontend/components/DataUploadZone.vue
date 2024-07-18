@@ -1,19 +1,24 @@
 <template>
   <section class="space-y-2">
-    <div
+    <UCard
       ref="dropZoneRef"
-      class="flex text-sm h-40 cursor-pointer items-center gap-1 justify-center rounded border-gray-600 border bg-gray-100 p-3"
+      class="text-sm flex justify-center items-center h-40"
       :class="{ '!border-blue-300 !bg-blue-100': isOverDropZone }"
       @click="open()"
     >
-      <Icon name="heroicons:document-chart-bar" class="size-6" />
-      <p>
-        <span>Drop RSSI samples here, or</span>
-        <button class="underline" @click.stop="open()">
-          select files
-        </button>
-      </p>
-    </div>
+      <span>Drag and drop RSSI sample files or </span>
+
+      <UButton
+        class="inline-block text-xs ml-1"
+        color="white"
+        size="sm"
+        variant="solid"
+        @click.stop="open()"
+      >
+        select files
+      </UButton>
+    </UCard>
+
     <DataUploadZoneFile
       v-for="file in files"
       :key="file.name"
