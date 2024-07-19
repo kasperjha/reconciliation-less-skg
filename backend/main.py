@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import csv
@@ -99,6 +99,18 @@ def create_collection(collection: CollectionCreate) -> Collection:
 
 class ProtoAnalysisResponse(BaseModel):
     result: str
+
+
+@app.post("/collections/{collection_id}/datasets")
+def upload_datasets(collection_id: int, files: list[UploadFile]):
+    collection = next(filter(lambda c: c["id"] == collection_id, collections), None)
+
+    if collection is None:
+        raise HTTPException(status_code=404, detail="Collection not found.")
+
+    # TODO: actually process submitted files
+
+    return {"message": "Files processed sucessfully."}
 
 
 @app.get("/proto/analysis")
