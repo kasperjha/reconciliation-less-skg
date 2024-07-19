@@ -1,0 +1,12 @@
+{
+  // TODO: add these recs to my project template
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "antfu.goto-alias",
+    "dbaeumer.vscode-eslint",
+    "heybourn.headwind",
+    "antfu.iconify",
+    "vue.volar",
+    "praburangki.nuxt-snippets"
+  ]
+}
