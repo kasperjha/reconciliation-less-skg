@@ -78,7 +78,3 @@ for dataset in [
     print("".join(map(lambda x: str(x), mean_std_quantization(gw[0:100]))))
     print("".join(map(lambda x: str(x), mean_std_quantization(node[0:100]))))
     print()
-    print("".join(map(lambda x: str(x), differential_quantization(gw[0:100]))))
-    print("".join(map(lambda x: str(x), differential_quantization(node[0:100]))))
-    print()
-    print()
