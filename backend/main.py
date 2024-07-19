@@ -71,12 +71,30 @@ class Collection(BaseModel):
     name: str
 
 
+# TODO: use a database
+collections = [
+    {"id": 1, "name": "Collection A"},
+    {"id": 2, "name": "Collection B"},
+]
+
+
 @app.get("/collections/")
 def get_collections() -> list[Collection]:
-    return [
-        {"id": 1, "name": "Collection A"},
-        {"id": 2, "name": "Collection B"},
-    ]
+    return collections
+
+
+class CollectionCreate(BaseModel):
+    name: str
+
+
+@app.post("/collections/")
+def create_collection(collection: CollectionCreate) -> Collection:
+    newCollection: Collection = {
+        "id": len(collections) + 1,
+        "name": collection.name,
+    }
+    collections.append(newCollection)
+    return newCollection
 
 
 class ProtoAnalysisResponse(BaseModel):
