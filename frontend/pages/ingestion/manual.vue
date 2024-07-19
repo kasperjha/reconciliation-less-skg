@@ -11,15 +11,18 @@
       Select which collection these sample should belong to.
     </p>
 
-    <CollectionPicker v-model="selectedCollectionId" />
-    <UButton
-      color="white"
-      icon="i-heroicons-arrow-top-right-on-square-20-solid"
-      trailing
-      @click="onNewCollection"
-    >
-      New collection
-    </UButton>
+    <div class="flex gap-1">
+      <CollectionPicker v-model="selectedCollectionId" class="flex-grow" />
+      <UButton
+        color="white"
+        size="lg"
+        icon="i-heroicons-arrow-top-right-on-square-20-solid"
+        trailing
+        @click="onNewCollection"
+      >
+        New collection
+      </UButton>
+    </div>
 
     <h2>Select files</h2>
 
