@@ -17,7 +17,7 @@
         placeholder="New collection"
       />
       <template #footer>
-        <UButton type="submit" :loading="status === 'loading'">
+        <UButton type="submit" :loading="status === 'pending'">
           Create collection
         </UButton>
       </template>

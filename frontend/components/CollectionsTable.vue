@@ -1,8 +1,9 @@
 <template>
   <ContainerRounded>
+    {{ status }}
     <UTable
       :rows="rows"
-      :loading="status === 'loading'"
+      :loading="status === 'pending'"
       :columns="columns"
     />
   </ContainerRounded>
