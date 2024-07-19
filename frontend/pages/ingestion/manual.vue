@@ -1,7 +1,25 @@
 <template>
   <main>
     <h1>Manually ingest samples</h1>
+
+    <p>
+      Here files can be ingested into the system by hand.
+    </p>
+
+    <h2>Select files</h2>
+
+    <p>
+      <!-- TODO: research and document file structure -->
+      The RSSI data files require a specific data structure.
+      They must be in `csv` format and have one column with integer valued cells.
+    </p>
+
     <SampleDropZone v-model="files" />
+
+    <h2>Manage files</h2>
+    <p>
+      Sepecify metadata about the collected RSSI measurements.
+    </p>
 
     <UTable v-model="selectedDisplayFiles" :rows="displayFiles" />
 
@@ -35,9 +53,6 @@ const displayFiles = computed<DisplayFile[]>(() => files.value.map(f => ({
 })))
 
 function removeSelectedFiles() {
-  console.log(selectedDisplayFiles.value)
-  console.log('removing selected files:')
-  console.log(selectedDisplayFiles.value)
   selectedDisplayFiles.value.forEach(f => removeFile(f.id))
   selectedDisplayFiles.value = []
 }
