@@ -65,16 +65,25 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
 
-for dataset in [
-    "oliviera-car.csv",
-    "oliviera-los-far.csv",
-    "oliviera-los-near.csv",
-    "oliviera-nlos.csv",
-    "oliviera-walking.csv",
-]:
-    print(dataset)
-    gw, node = load_dataset(dataset)
-    print()
-    print("".join(map(lambda x: str(x), mean_std_quantization(gw[0:100]))))
-    print("".join(map(lambda x: str(x), mean_std_quantization(node[0:100]))))
-    print()
+class ProtoAnalysisResponse(BaseModel):
+    result: str
+
+
+@app.get("/proto/analysis")
+def proto_analysis() -> str:
+    datasets = [
+        "oliviera-car.csv",
+        "oliviera-los-far.csv",
+        "oliviera-los-near.csv",
+        "oliviera-nlos.csv",
+        "oliviera-walking.csv",
+    ]
+
+    result = ""
+    for dataset in datasets:
+        result += "\n"
+        result += "".join(map(lambda x: str(x), mean_std_quantization(gw[0:100])))
+        result += "".join(map(lambda x: str(x), mean_std_quantization(node[0:100])))
+        result += "\n"
+
+    return {result: result}
