@@ -5,13 +5,13 @@
       <CardChoice
         title="Programatic"
         description="Submit samples to the API from your own application."
-        to="ingestion/programatic"
+        to="/ingestion/programatic"
         disabled
       />
       <CardChoice
         title="Manual"
         description="Use the UI to upload a spreadsheet of samples."
-        to="ingestion/manual"
+        to="/ingestion/manual"
       />
     </div>
   </main>
