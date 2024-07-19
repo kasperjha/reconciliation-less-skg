@@ -18,13 +18,6 @@
         select files
       </UButton>
     </UCard>
-
-    <DataUploadZoneFile
-      v-for="file in files"
-      :key="file.name"
-      :file="file"
-      @remove="removeFile(file.name)"
-    />
   </section>
 </template>
 
@@ -49,6 +42,7 @@ function addFileList(fileList: FileList) {
   }
 }
 
+// TODO: remove this dead code
 // removes file given filename
 function removeFile(filename: string) {
   const file = files.value.find(f => filename === f.name)
