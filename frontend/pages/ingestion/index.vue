@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>Ingestion</h1>
     <div class="grid-cols-2 gap-2 grid h-40">
       <CardChoice
@@ -13,5 +13,5 @@
         to="ingestion/manual"
       />
     </div>
-  </div>
+  </main>
 </template>

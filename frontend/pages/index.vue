@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>SKG Analysis Framework</h1>
     <div class="grid grid-cols-3 gap-2 h-40 items-stretch">
       <CardChoice
@@ -8,7 +8,7 @@
         v-bind="action"
       />
     </div>
-  </div>
+  </main>
 </template>
 
 <script lang="ts" setup>

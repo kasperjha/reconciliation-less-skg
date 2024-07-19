@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>Collections</h1>
-  </div>
+  </main>
 </template>

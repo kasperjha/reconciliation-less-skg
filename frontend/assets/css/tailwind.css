@@ -3,7 +3,13 @@
 @tailwind components;
 
 @layer components {
-  h1 {
-    @apply text-2xl mb-6;
+  main > h1 {
+    @apply text-2xl mb-4 mt-20;
+  }
+  main > h2 {
+    @apply text-xl mb-2 mt-8;
+  }
+  main > p {
+    @apply mb-2 text-gray-400;
   }
 }

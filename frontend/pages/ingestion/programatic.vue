@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>Programatically ingest samples</h1>
-  </div>
+  </main>
 </template>

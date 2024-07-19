@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <main>
     <h1>Manually ingest samples</h1>
     <DataUploadZone v-model="files" />
-  </div>
+  </main>
 </template>
 
 <script lang="ts" setup>
