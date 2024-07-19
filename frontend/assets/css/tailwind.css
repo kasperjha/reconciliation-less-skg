@@ -4,7 +4,7 @@
 
 @layer components {
   main > h1 {
-    @apply text-2xl mb-4 mt-20;
+    @apply text-2xl mb-4 mt-10;
   }
   main > h2 {
     @apply text-xl mb-2 mt-8;
