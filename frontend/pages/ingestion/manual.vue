@@ -11,9 +11,8 @@
       Select which collection these sample should belong to.
     </p>
 
-    <CollectionPicker v-model="selectedCollectionId" class="mt-4" />
+    <CollectionPicker v-model="selectedCollectionId" />
     <UButton
-      class="mt-2"
       color="white"
       icon="i-heroicons-arrow-top-right-on-square-20-solid"
       trailing
@@ -37,13 +36,12 @@
       Sepecify metadata about the collected RSSI measurements.
     </p>
 
-    <UTable v-model="selectedDisplayFiles" :rows="displayFiles" />
+    <UTable
+      v-model="selectedDisplayFiles"
+      :rows="displayFiles"
+    />
 
-    <UButton
-      color="red"
-      class="mt-4"
-      @click="removeSelectedFiles"
-    >
+    <UButton color="red" @click="removeSelectedFiles">
       Remove File(s)
     </UButton>
   </main>
