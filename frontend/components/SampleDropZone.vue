@@ -3,7 +3,7 @@
     <UCard
       ref="dropZoneRef"
       class="text-sm flex justify-center items-center h-40"
-      :class="{ '!border-blue-300 !bg-blue-100': isOverDropZone }"
+      :class="{ 'brightness-150': isOverDropZone }"
       @click="open()"
     >
       <span>Drag and drop RSSI sample files or </span>
