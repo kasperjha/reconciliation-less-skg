@@ -1,9 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import csv
 
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def load_dataset(filename: str):
@@ -64,7 +75,7 @@ class Collection(BaseModel):
 def get_collections() -> list[Collection]:
     return [
         {"id": 1, "name": "Collection A"},
-        {"id": 1, "name": "Collection A"},
+        {"id": 2, "name": "Collection B"},
     ]
 
 
