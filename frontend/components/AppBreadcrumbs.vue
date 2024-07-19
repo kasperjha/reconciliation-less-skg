@@ -3,21 +3,28 @@
 </template>
 
 <script lang="ts" setup>
-function makeCrumb(prevUrl: string, thisPath: string) {
-  return {
-    label: thisPath[0].toUpperCase() + thisPath.slice(1),
-    to: `${prevUrl}/${thisPath}`,
-  }
+interface Crumb {
+  label: string
+  to: string
 }
 
 function buildCrumbs(routeFullPath: string) {
-  const homeCrumb = {
+  const pathParts = routeFullPath.split('/').filter(s => s !== '')
+  const reduceFn = (acc: Crumb[], now: string) => {
+    const prevCrumb = acc.slice(-1)[0]
+    const newCrumb = {
+      label: now[0].toUpperCase() + now.slice(1),
+      to: acc.length > 1 ? `${prevCrumb.to}/${now}` : `/${now}`,
+    }
+    return acc.concat([newCrumb])
+  }
+
+  const firstCrumb = [{
     label: 'Home',
     to: '/',
-  }
-  const pathParts = routeFullPath.split('/')
-  const restCrumbs = pathParts.filter(s => s !== '').reduce((prev, now) => prev.concat([makeCrumb(prev.slice(-1)[0].label, now)]), [{ to: '', label: '' }])
-  return [homeCrumb].concat(restCrumbs.slice(1))
+  }]
+
+  return pathParts.reduce(reduceFn, firstCrumb)
 }
 
 const route = useRoute()
