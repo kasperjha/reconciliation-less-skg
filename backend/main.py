@@ -1,5 +1,5 @@
-from typing import Union, Literal, List
 from fastapi import FastAPI
+from pydantic import BaseModel
 import csv
 
 
@@ -55,14 +55,17 @@ def differential_quantization():
     raise NotImplementedError()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+class Collection(BaseModel):
+    id: int
+    name: str
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/collections/")
+def get_collections() -> list[Collection]:
+    return [
+        {"id": 1, "name": "Collection A"},
+        {"id": 1, "name": "Collection A"},
+    ]
 
 
 class ProtoAnalysisResponse(BaseModel):
