@@ -1,7 +1,7 @@
 <template>
   <main>
     <h1>Collections</h1>
-    <UButton @click="isCreateFormOpen = true">
+    <UButton class="mb-2" @click="isCreateFormOpen = true">
       New Collection
     </UButton>
     <CollectionsTable :key="refreshKey" />
