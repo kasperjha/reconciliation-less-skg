@@ -1,6 +1,5 @@
 <template>
   <ContainerRounded>
-    {{ status }}
     <UTable
       :rows="rows"
       :loading="status === 'pending'"
