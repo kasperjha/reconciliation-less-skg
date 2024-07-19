@@ -20,7 +20,7 @@
         trailing
         @click="onNewCollection"
       >
-        New collection
+        Manage collections
       </UButton>
     </div>
 
