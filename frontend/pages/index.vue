@@ -16,11 +16,12 @@ interface Action {
   title: string
   description?: string
   to: string
+  disabled?: boolean
 }
 
 const heroPageActions: Action[] = [
-  { title: '1. Ingest', description: 'Load and prepare RSSI samples.', to: '/ingestion' },
-  { title: '2. Manage', description: 'Manage collections of ingested RSSI samples.', to: '/collections' },
-  { title: '3. Analyse', description: 'Investigate the applicability of SKG for collected data.', to: '/analysis' },
+  { title: '1. Ingest', description: 'Load and prepare RSSI samples.', to: '/ingestion', disabled: false },
+  { title: '2. Manage', description: 'Manage collections of ingested RSSI samples.', to: '/collections', disabled: true },
+  { title: '3. Analyse', description: 'Investigate the applicability of SKG for collected data.', to: '/analysis', disabled: true },
 ]
 </script>

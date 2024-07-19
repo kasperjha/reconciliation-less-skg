@@ -6,6 +6,7 @@
         title="Programatic"
         description="Submit samples to the API from your own application."
         to="ingestion/programatic"
+        disabled
       />
       <CardChoice
         title="Manual"

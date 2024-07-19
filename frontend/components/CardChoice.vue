@@ -1,9 +1,10 @@
 <template>
   <NuxtLink
-    :to="to"
-    :disabled="disabled"
+    :to="disabled ? '' : to"
+    class="hover:brightness-90"
+    :class="{ 'opacity-50 !brightness-100': disabled }"
   >
-    <UCard class="hover:brightness-90 h-full">
+    <UCard class="h-full ">
       <p>
         {{ title }}
       </p>
