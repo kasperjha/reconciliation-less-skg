@@ -40,6 +40,35 @@
     </p>
 
     <SampleFilesManager v-model="files" />
+
+    <h2>Submit</h2>
+
+    <div class="flex gap-2 items-center">
+      <UButton
+        :disabled="!selectedCollectionId"
+        :loading="status === 'pending'"
+        @click="submitFiles"
+      >
+        Upload samples
+      </UButton>
+
+      <p class="text-red-400 text-sm">
+        <span v-if="!selectedCollectionId">
+          Select a collection to submit samples to
+        </span>
+        <span v-else-if="files.length < 1">
+          Select at least one file to upload
+        </span>
+        <span v-if="status === 'error'">
+          {{ apiError }}
+        </span>
+        <span v-if="status === 'success'" class="text-green-400">
+          Samples sucessfully submitted
+        </span>
+      </p>
+
+      <p v-if="!selectedCollectionId" class="text-red-400" />
+    </div>
   </main>
 </template>
 
@@ -50,4 +79,32 @@ const selectedCollectionId = ref(null)
 function onNewCollection() {
   navigateTo('/collections')
 }
+
+const status = ref<'idle' | 'pending' | 'success' | 'error'>(false)
+const apiError = ref(null)
+
+function submitFiles() {
+  const data = new FormData()
+  files.value.forEach(file => data.append('files', file, file.name))
+  status.value = 'pending'
+  $fetch(`http://127.0.0.1:8000/collections/${selectedCollectionId.value}/datasets`, {
+    body: data,
+    method: 'post',
+  })
+    .then(() => {
+      status.value = 'success'
+    })
+    .catch((error) => {
+      apiError.value = error
+      status.value = 'error'
+    })
+}
+
+function resetSubmit() {
+  status.value = 'idle'
+  apiError.value = null
+}
+
+watch(selectedCollectionId, resetSubmit)
+watch(files, resetSubmit)
 </script>
