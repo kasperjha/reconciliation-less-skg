@@ -110,6 +110,16 @@ class ProtoAnalysisResponse(BaseModel):
     result: str
 
 
+@app.get("/collections/{collection_id}")
+def get_collection(collection_id: int):
+    collection = next(filter(lambda c: c["id"] == collection_id, collections), None)
+
+    if collection is None:
+        raise HTTPException(status_code=404, detail="Collection not found.")
+
+    return collection
+
+
 @app.post("/collections/{collection_id}/datasets")
 def upload_datasets(collection_id: int, files: list[UploadFile]):
     collection = next(filter(lambda c: c["id"] == collection_id, collections), None)
