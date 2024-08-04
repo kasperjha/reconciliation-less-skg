@@ -1,3 +1,4 @@
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -66,16 +67,22 @@ def differential_quantization():
     raise NotImplementedError()
 
 
+class Dataset(BaseModel):
+    filename: str
+
+
 class Collection(BaseModel):
     id: int
     name: str
+    datasets: list[Dataset]
 
 
 # TODO: use a database
-collections = [
-    {"id": 1, "name": "Collection A"},
-    {"id": 2, "name": "Collection B"},
-]
+collections: list[Collection] = []
+collections.append(
+    {"id": 1, "name": "Collection A", "datasets": [{"filename": "oliviera-car.csv"}]}
+)  # type: ignore
+collections.append({"id": 2, "name": "Collection B", "datasets": []})  # type: ignore
 
 
 @app.get("/collections/")
@@ -92,7 +99,9 @@ def create_collection(collection: CollectionCreate) -> Collection:
     newCollection: Collection = {
         "id": len(collections) + 1,
         "name": collection.name,
-    }
+        "datasets": [],
+    }  # type: ignore
+
     collections.append(newCollection)
     return newCollection
 
@@ -108,7 +117,28 @@ def upload_datasets(collection_id: int, files: list[UploadFile]):
     if collection is None:
         raise HTTPException(status_code=404, detail="Collection not found.")
 
-    # TODO: actually process submitted files
+    datasets = Path("datasets")
+    for file in files:
+        if file.filename is None:
+            raise HTTPException(status_code=400, detail="File without filename.")
+
+        if datasets.joinpath(file.filename).exists():
+            raise HTTPException(
+                status_code=409,
+                detail=f"Dataset with name '{file.filename}' already exists.",
+            )
+
+        # TODO: validate the format of the dataset
+
+    for dataset in files:
+        filename = dataset.filename
+        assert filename is not None
+        with open(datasets.joinpath(filename), "wb") as file:
+            content = dataset.file.read()
+            file.write(content)
+
+    datasets = [{"filename": file.filename} for file in files]
+    collection["datasets"].extend(datasets)
 
     return {"message": "Files processed sucessfully."}
 
