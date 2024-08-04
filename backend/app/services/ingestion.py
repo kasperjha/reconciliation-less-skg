@@ -12,6 +12,8 @@ class IngestionService:
     def __init__(self, collections_repo: CollectionsRepository, dataset_dir="datasets"):
         self.collections_repo = collections_repo
         self.dataset_dir = Path(dataset_dir)
+        if not self.dataset_dir.exists():
+            raise FileNotFoundError("Datasets folder does not exist.")
 
     def ingest_dataset(self, collection_id: int, file: UploadFile):
 
