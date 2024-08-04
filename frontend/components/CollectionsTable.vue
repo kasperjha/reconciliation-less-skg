@@ -5,7 +5,7 @@
   <ContainerRounded v-else>
     <UTable
       :rows="rows"
-      :loading="status === 'loading'"
+      :loading="status === 'pending'"
       :columns="columns"
     />
   </ContainerRounded>
