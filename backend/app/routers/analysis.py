@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from backend.app.services.analysis import mean_std_quantization
+from app.services.analysis import mean_std_quantization
 
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
