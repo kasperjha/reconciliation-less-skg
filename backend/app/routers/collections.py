@@ -1,4 +1,3 @@
-from http.client import CONFLICT
 from fastapi import APIRouter, HTTPException, UploadFile
 from pydantic import BaseModel
 
@@ -7,7 +6,8 @@ from app.repository.collections import (
     CollectionNotFoundException,
     TestCollectionRepository,
 )
-from app.services.ingestion import IngestionService, MissingFilenameError
+from app.repository.datasets import DatasetsRepository, MissingFilenameError
+from app.services.ingestion import IngestionService
 
 
 router = APIRouter(prefix="/collections", tags=["collections"])
@@ -24,6 +24,7 @@ class Collection(BaseModel):
 
 
 collections = TestCollectionRepository()
+datasets = DatasetsRepository()
 
 
 @router.get("/")
@@ -47,7 +48,7 @@ def get_collection(id: int):
 
 @router.post("/{id}/datasets")
 def upload_datasets(id: int, files: list[UploadFile]):
-    ingestion = IngestionService(collections)
+    ingestion = IngestionService(collections, datasets)
 
     try:
         for file in files:
