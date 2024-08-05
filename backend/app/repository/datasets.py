@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 
 from fastapi import UploadFile
@@ -41,5 +42,20 @@ class DatasetsRepository:
             content = file.file.read()  # TODO: chuck file upload for large files
             dstfile.write(content)
 
-    def get(self, collection_id: int, filename: str):
-        pass
+    def get(self, collection_id: int, filename: str) -> tuple[list[int], list[int]]:
+        """Reads dataset from file system and returns list of gateway and node samples."""
+        dataset_path = self._build_dataset_path(collection_id, filename)
+        if not dataset_path.exists():
+            raise FileNotFoundError("Dataset file not found.")
+
+        samples_gw = []
+        samples_node = []
+
+        with open(dataset_path, "r") as dataset:
+            dataset = csv.reader(dataset)
+            next(dataset)  # skip header row
+            for gw, node in dataset:
+                samples_gw.append(gw)
+                samples_node.append(node)
+
+        return samples_gw, samples_node
