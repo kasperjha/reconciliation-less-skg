@@ -26,11 +26,11 @@ class DatasetsRepository:
             raise MissingFilenameError()
 
         # make sure collection and directory exists
-        collection_dir = self._build_collection_dir()
+        collection_dir = self._build_collection_dir(collection_id)
         collection_dir.mkdir(exist_ok=True)
 
         # make sure datset name is unique for collection
-        dataset_path = self._build_dataset_path()
+        dataset_path = self._build_dataset_path(collection_id, file.filename)
 
         if dataset_path.exists():
             raise FileExistsError()
