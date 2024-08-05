@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, UploadFile
-from pydantic import BaseModel
-
 from app.repository.collections import (
+    Collection,
     CollectionCreate,
     CollectionNotFoundException,
     TestCollectionRepository,
@@ -12,16 +11,6 @@ from app.services.ingestion import IngestionService
 
 
 router = APIRouter(prefix="/collections", tags=["collections"])
-
-
-class Dataset(BaseModel):
-    filename: str
-
-
-class Collection(BaseModel):
-    id: int
-    name: str
-    datasets: list[Dataset]
 
 
 collections = TestCollectionRepository()
