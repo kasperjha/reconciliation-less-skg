@@ -55,7 +55,7 @@ class DatasetsRepository:
             dataset = csv.reader(dataset)
             next(dataset)  # skip header row
             for gw, node in dataset:
-                samples_gw.append(gw)
-                samples_node.append(node)
+                samples_gw.append(int(gw, 10))
+                samples_node.append(int(node, 10))
 
         return samples_gw, samples_node
