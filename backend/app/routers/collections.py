@@ -48,7 +48,7 @@ def get_collection(id: int):
 
 
 @router.post("/{id}/analyse")
-def analyse_collection_proto(id):
+def analyse_collection_proto(id: int):
     analysis = AnalysisService(collections, datasets)
     analysis.analyse_collection(id)
 
