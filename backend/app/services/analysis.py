@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from app.repository.collections import CollectionsRepository
 from app.repository.datasets import DatasetsRepository
 from app.services.algorithms import MeanStdQuantiser
-from app.services.randomness import NistRandomnessAnalyser
+from app.services.randomness import NistRandomnessAnalyser, RandomnessResult
 
 
 # class RandomnessTestResult(BaseModel):
@@ -25,7 +25,7 @@ class AnalysisResultSamples(BaseModel):
     samples_raw: list[int]
     samples_processed: list[int]
     secret_key: str
-    key_randomness_proto: bool
+    randomness: list[RandomnessResult]
 
 
 class AnalysisResultDataset(BaseModel):
@@ -53,7 +53,7 @@ class AnalysisService:
             "samples_raw": raw_samples,
             "samples_processed": samples_processed,
             "secret_key": samples_quantised,
-            "key_randomness_proto": self.randomness.analyse_key_randomness(samples_quantised),
+            "randomness": self.randomness.analyse_key_randomness(samples_quantised),
         }
         return AnalysisResultSamples(**results)
 
