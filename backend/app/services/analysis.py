@@ -49,7 +49,7 @@ class AnalysisService:
             "key_length": key_length,
             "mismatch_count": self._get_mismatch_count(node_key[:key_length], gateway_key[:key_length]),
             "filename": filename,
-            "secret_key": node_key if node_key == gateway_key else None,
+            "secret_key": node_key[:key_length] if node_key == gateway_key else None,
             "randomness": self.randomness.analyse_key_randomness(node_key) if node_key == gateway_key else [],
         }
 
