@@ -40,7 +40,7 @@ class AnalysisService:
         same = 0
         for i in range(len(node_key)):
             same += 1 if node_key[i] == gw_key[i] else 0
-        return same / len(node_key)
+        return same
 
     def _analyse_dataset(self, id, filename: str):
         gateway, node = self.datasets.get(id, filename)
