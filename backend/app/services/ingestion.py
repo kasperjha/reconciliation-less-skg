@@ -5,9 +5,7 @@ from app.repository.datasets import DatasetsRepository
 
 
 class IngestionService:
-    def __init__(
-        self, collections: CollectionsRepository, datasets: DatasetsRepository
-    ):
+    def __init__(self, collections: CollectionsRepository, datasets: DatasetsRepository):
         self.collections_repo = collections
         self.datasets_repo = datasets
 
