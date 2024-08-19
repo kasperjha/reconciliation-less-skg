@@ -10,6 +10,7 @@ class NoDatasetsError(Exception):
 
 
 class AnalysisResultDataset(BaseModel):
+    mismatch_count: float
     filename: str
     randomness: list[RandomnessResult]
     secret_key: str | None
@@ -32,12 +33,19 @@ class AnalysisService:
         samples_quantised = self.quantiser.quantise(samples_processed)
         return samples_quantised
 
+    def _get_mismatch_count(self, node_key, gw_key) -> float:
+        same = 0
+        for i in range(len(node_key)):
+            same += 1 if node_key[i] == gw_key[i] else 0
+        return same / len(node_key)
+
     def _analyse_dataset(self, id, filename: str):
         gateway, node = self.datasets.get(id, filename)
         gateway_key = self._get_key(gateway)
         node_key = self._get_key(node)
         key_length = min(len(gateway_key), len(node_key))
         results = {
+            "mismatch_count": self._get_mismatch_count(node_key[:key_length], gateway_key[:key_length]),
             "filename": filename,
             "secret_key": node_key if node_key == gateway_key else None,
             "randomness": self.randomness.analyse_key_randomness(node_key) if node_key == gateway_key else [],
