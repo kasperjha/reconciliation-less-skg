@@ -5,33 +5,14 @@ from app.services.algorithms import MeanStdQuantiser
 from app.services.randomness import NistRandomnessAnalyser, RandomnessResult
 
 
-# class RandomnessTestResult(BaseModel):
-#     test: str
-#     passed: bool
-#     p_value: float
-
-
-# class RandomnessAnalysisResult(BaseModel):
-#     tests_total: int
-#     tests_passed: int
-#     results: list[RandomnessTestResult]
-
-
 class NoDatasetsError(Exception):
     pass
 
 
-class AnalysisResultSamples(BaseModel):
-    samples_raw: list[int]
-    samples_processed: list[int]
-    secret_key: str
-    randomness: list[RandomnessResult]
-
-
 class AnalysisResultDataset(BaseModel):
     filename: str
-    gateway: AnalysisResultSamples
-    node: AnalysisResultSamples
+    randomness: list[RandomnessResult]
+    secret_key: str | None
 
 
 class AnalysisResultCollection(BaseModel):
@@ -46,24 +27,22 @@ class AnalysisService:
         self.quantiser = MeanStdQuantiser()
         self.randomness = NistRandomnessAnalyser()
 
-    def _analyse_samples(self, raw_samples: list[int]):
+    def _get_key(self, raw_samples: list[int]):
         samples_processed = raw_samples  # TODO: implement preprocessing
         samples_quantised = self.quantiser.quantise(samples_processed)
-        results = {
-            "samples_raw": raw_samples,
-            "samples_processed": samples_processed,
-            "secret_key": samples_quantised,
-            "randomness": self.randomness.analyse_key_randomness(samples_quantised),
-        }
-        return AnalysisResultSamples(**results)
+        return samples_quantised
 
     def _analyse_dataset(self, id, filename: str):
         gateway, node = self.datasets.get(id, filename)
+        gateway_key = self._get_key(gateway)
+        node_key = self._get_key(node)
+        key_length = min(len(gateway_key), len(node_key))
         results = {
             "filename": filename,
-            "gateway": self._analyse_samples(gateway),
-            "node": self._analyse_samples(node),
+            "secret_key": node_key if node_key == gateway_key else None,
+            "randomness": self.randomness.analyse_key_randomness(node_key) if node_key == gateway_key else [],
         }
+
         return AnalysisResultDataset(**results)
 
     def analyse_collection(self, id: int):
