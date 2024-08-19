@@ -13,6 +13,7 @@ class AnalysisResultDataset(BaseModel):
     mismatch_count: float
     filename: str
     randomness: list[RandomnessResult]
+    key_length: int
     secret_key: str | None
 
 
@@ -45,6 +46,7 @@ class AnalysisService:
         node_key = self._get_key(node)
         key_length = min(len(gateway_key), len(node_key))
         results = {
+            "key_length": key_length,
             "mismatch_count": self._get_mismatch_count(node_key[:key_length], gateway_key[:key_length]),
             "filename": filename,
             "secret_key": node_key if node_key == gateway_key else None,
