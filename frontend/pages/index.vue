@@ -22,6 +22,6 @@ interface Action {
 const heroPageActions: Action[] = [
   { title: 'Ingest', description: 'Load and prepare RSSI samples.', to: '/ingestion', disabled: false },
   { title: 'Manage', description: 'Manage collections of ingested RSSI samples.', to: '/collections', disabled: false },
-  { title: 'Analysis', description: 'Investigate the applicability of SKG for collected data.', to: '/analysis', disabled: true },
+  { title: 'Analysis', description: 'Investigate the applicability of SKG for collected data.', to: '/analysis', disabled: false },
 ]
 </script>
