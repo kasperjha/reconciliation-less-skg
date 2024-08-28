@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 from pydantic import BaseModel
 
+from app.services.nist_test_suite.CumulativeSums import CumulativeSums
+from app.services.nist_test_suite.RunTest import RunTest
 from app.services.nist_test_suite.FrequencyTest import FrequencyTest
 
 
@@ -20,9 +22,18 @@ class RandomnessAnalyser(ABC):
 
 class NistRandomnessAnalyser(RandomnessAnalyser):
 
-    # TODO: implement other applicable tests
+    def __init__(self):
+        self.tests = {}
+        self.tests["frequency_monobit"] = FrequencyTest.monobit_test
+        self.tests["block_frequency"] = FrequencyTest.block_frequency
+        self.tests["approximate_entropy"] = FrequencyTest.block_frequency
+        self.tests["runs"] = RunTest.run_test
+        self.tests["longest_run_of_ones"] = RunTest.longest_one_block_test
+        self.tests["cumulative_sums"] = CumulativeSums.cumulative_sums_test
 
     def analyse_key_randomness(self, key: str):
-        p_value, passed = FrequencyTest.monobit_test(key)
-        results = {"test_name": "frequency_monobit", "p_value": p_value, "passed": passed}
-        return [RandomnessResult(**results)]
+        results = []
+        for name, test in self.tests.items():
+            p_value, passed = test(key)
+            results.append(RandomnessResult(**{"test_name": name, "p_value": p_value, "passed": passed}))
+        return results
