@@ -9,18 +9,21 @@
         <h3>{{ dataset.filename }}</h3>
       </template>
 
-      <ul class="list-disc ml-4">
-        <li>mismatch count: {{ dataset.mismatch_count }}</li>
-        <li>key length: {{ dataset.key_length }}</li>
-        <li v-if="dataset.mismatch_count <= 0">
-          Secret key: {{ dataset.secret_key }}
-        </li>
-      </ul>
-      <AnalysisRandomness v-if="dataset.randomness.length" :results="dataset.randomness" />
-      <p v-else class="mt-2 text-red-600">
-        No randomess analysis because of key mismatch
-      </p>
-    </UCard>
+      <table class="w-full">
+        <tr>
+          <td>signal correlation</td>
+          <td>{{ dataset.analysis.signal_correlation }}</td>
+        </tr>
+        <tr>
+          <td>after processing</td>
+          <td>{{ dataset.analysis.processed_correlation }}</td>
+        </tr>
+        <tr>
+          <td>BDR</td>
+          <td>{{ dataset.analysis.quantised_bdr }}</td>
+        </tr>
+      </table>
+    </ucard>
   </div>
 </template>
 

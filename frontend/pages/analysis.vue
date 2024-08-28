@@ -35,7 +35,7 @@
 
     <h2>Results</h2>
 
-    <AnalysisResult v-if="analysis" :results="analysis.results" />
+    <AnalysisResult v-if="analysis" :results="analysis" />
 
     <UCard v-if="analysis">
       <details>
