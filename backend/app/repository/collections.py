@@ -41,9 +41,7 @@ class CollectionsRepository:
         return self.collections
 
     def create(self, collection: CollectionCreate) -> Collection:
-        newCollection = Collection(
-            **{"id": len(self.collections), "name": collection.name, "datasets": []}
-        )
+        newCollection = Collection(**{"id": len(self.collections), "name": collection.name, "datasets": []})
         self.collections.append(newCollection)
         return newCollection
 
@@ -67,10 +65,3 @@ class CollectionsRepository:
         dataset = CollectionDataset(**{"filename": filename})
         collection.datasets.append(dataset)
         return dataset
-
-
-class TestCollectionRepository(CollectionsRepository):
-    def __init__(self):
-        super().__init__()
-        self.create(CollectionCreate(**{"name": "Collection A"}))
-        self.create(CollectionCreate(**{"name": "Collection B"}))

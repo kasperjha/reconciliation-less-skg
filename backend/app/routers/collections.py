@@ -3,7 +3,7 @@ from app.repository.collections import (
     Collection,
     CollectionCreate,
     CollectionNotFoundException,
-    TestCollectionRepository,
+    CollectionsRepository,
 )
 from app.repository.datasets import DatasetsRepository, MissingFilenameError
 from app.services.analysis import AnalysisResultCollection, AnalysisService, NoDatasetsError
@@ -13,8 +13,16 @@ from app.services.ingestion import IngestionService
 router = APIRouter(prefix="/collections", tags=["collections"])
 
 
-collections = TestCollectionRepository()
+collections = CollectionsRepository()
 datasets = DatasetsRepository()
+
+
+collections.create(CollectionCreate(**{"name": "Oliviera"}))
+collections.update_dataset(0, "oliviera-car.csv")
+collections.update_dataset(0, "oliviera-los-far.csv")
+collections.update_dataset(0, "oliviera-los-near.csv")
+collections.update_dataset(0, "oliviera-nlos.csv")
+collections.update_dataset(0, "oliviera-walking.csv")
 
 
 @router.get("/")
