@@ -1,4 +1,6 @@
 from abc import abstractmethod, ABC
+from pydantic import BaseModel
+from scipy.stats import pearsonr
 
 
 def std_dev(samples):
@@ -38,3 +40,52 @@ class MeanStdQuantiser(Quantiser):
 class DifferentialQuantiser(Quantiser):
     def quantise(self, samples: list[int]) -> str:
         raise NotImplementedError()
+
+
+class Preprocessor(ABC):
+    @abstractmethod
+    def run(self, samples: list[int]) -> list[int]:
+        pass
+
+
+class SchemeAnalysisResult(BaseModel):
+    signal_correlation: float
+    processed_correlation: float
+    quantised_bdr: float
+
+
+class SchemeAnalyser:
+
+    def __init__(self, preprocessor: Preprocessor, quantiser: Quantiser):
+        self.preprocessor = preprocessor
+        self.quantiser = quantiser
+
+    def _bit_disagreement_rate(self, key_node, key_gw) -> float:
+        assert len(key_gw) == len(key_node)
+        mismatch = 0
+        for i in range(len(key_node)):
+            mismatch += 0 if key_node[i] == key_gw[i] else 1
+        return mismatch / len(key_node)
+
+    def analyse_key_material(self, samples_node: list[int], samples_gw: list[int]):
+
+        results = {}
+
+        # calculate correlation coefficient on preliminary key material
+        results["signal_correlation"] = pearsonr(x=samples_node, y=samples_gw).statistic
+
+        # apply preprocessing step
+        processed_node = self.preprocessor.run(samples_node)
+        processed_gw = self.preprocessor.run(samples_gw)
+
+        # recalculate correlation after processing
+        results["processed_correlation"] = pearsonr(x=processed_node, y=processed_gw).statistic
+
+        # apply quantisation step
+        quantised_node = self.quantiser.quantise(samples_node)
+        quantised_gw = self.quantiser.quantise(samples_gw)
+
+        # calculate key material BD
+        results["quantised_bdr"] = self._bit_disagreement_rate(quantised_node, quantised_gw)
+
+        return SchemeAnalysisResult(**results)
