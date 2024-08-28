@@ -6,7 +6,7 @@ from app.repository.collections import (
     CollectionsRepository,
 )
 from app.repository.datasets import DatasetsRepository, MissingFilenameError
-from app.services.analysis import AnalysisResultCollection, AnalysisService, NoDatasetsError
+from app.services.analysis import AnalysisService, NoDatasetsError
 from app.services.ingestion import IngestionService
 
 
@@ -45,9 +45,8 @@ def get_collection(id: int):
 
 
 @router.post("/{id}/analyse")
-def analyse_collection_proto(id: int) -> AnalysisResultCollection:
+def analyse_collection_proto(id: int):
     analysis = AnalysisService(collections, datasets)
-
     try:
         return analysis.analyse_collection(id)
     except NoDatasetsError:
