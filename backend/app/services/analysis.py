@@ -4,6 +4,7 @@ from app.repository.datasets import DatasetsRepository
 from scipy.stats import pearsonr
 from app.services.algorithms.preprocessors import Preprocessor
 from app.services.algorithms.preprocessors.SavitzkyGolay import SavitzkyGolay
+from app.services.algorithms.preprocessors.Kalman import Kalman
 from app.services.algorithms.quantisers import Quantiser
 from app.services.algorithms.quantisers.MeanStd import MeanStdQuantiser
 
@@ -91,6 +92,7 @@ class DefaultAnalyser(SchemeAnalyser):
     def __init__(self):
         super().__init__()
         self.register_preprocessor("savgol", SavitzkyGolay())
+        self.register_preprocessor("kalman", Kalman())
         self.register_quantiser("mean_std", MeanStdQuantiser())
 
 
