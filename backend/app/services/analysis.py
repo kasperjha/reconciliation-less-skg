@@ -7,6 +7,7 @@ from app.services.algorithms.preprocessors.SavitzkyGolay import SavitzkyGolay
 from app.services.algorithms.preprocessors.Kalman import Kalman
 from app.services.algorithms.quantisers import Quantiser
 from app.services.algorithms.quantisers.MeanStd import MeanStdQuantiser
+from app.services.algorithms.quantisers.CombinedMultilevel import CombinedMultilevel
 
 
 class NoDatasetsError(Exception):
@@ -94,6 +95,7 @@ class DefaultAnalyser(SchemeAnalyser):
         self.register_preprocessor("savgol", SavitzkyGolay())
         self.register_preprocessor("kalman", Kalman())
         self.register_quantiser("mean_std", MeanStdQuantiser())
+        self.register_quantiser("combined_multilevel", CombinedMultilevel())
 
 
 class DatasetAnalysis(BaseModel):
