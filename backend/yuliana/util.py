@@ -100,14 +100,7 @@ def apply_quantisation(gw, node, method, block_size, target_key_length):
 def make_keys(key_material, key_length):
     if len(key_material) % key_length != 0:
         raise ValueError("Key length must evenly divide length of key material.")
-
-    splits_needed = int(log(len(key_material) // key_length, 2))
-    keys = [key_material]
-
-    for _ in range(splits_needed):
-        temp = [split_key(key) for key in keys]
-        keys = [x for xs in temp for x in xs]
-    return keys
+    return get_blocks(key_material, key_length)
 
 
 def get_agreed_keys(gw_keys, node_keys):
