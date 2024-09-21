@@ -131,3 +131,9 @@ class QuantisationIntervalPlot:
         return fig
 
 
+class QuantisationIntervalPlotCorrected(QuantisationIntervalPlot):
+    """Same as parent class, but with corrected quantisation intervals."""
+
+    @override
+    def get_intervals(self, mean, variance):
+        return zip([mean, mean - variance, mean + variance], ["blue", "red", "green"])
