@@ -83,3 +83,51 @@ class PreprocessingInspectionPlot:
 
     def make(self):
         return px.line(self.plot, x="index", y="value", color="source", facet_col="stage")
+
+
+class QuantisationIntervalPlot:
+    """A plot to inspect the quantiation intervals for CMQ together with gateway and node signals."""
+
+    def __init__(self, dataset=None):
+        self.plot = {
+            "sample_index": [],
+            "sample_value": [],
+            "block_index": [],
+            "source": [],
+        }
+        self.lines = {}
+
+    def add_signal(self, source, block_index, signal):
+        if source not in self.lines.keys():
+            self.lines[source] = {}
+
+        self.lines[source][block_index] = (np.var(signal), np.mean(signal))
+
+        for sample_index, sample_value in enumerate(signal):
+            self.plot["source"].append(source)
+            self.plot["block_index"].append(block_index)
+            self.plot["sample_index"].append(sample_index)
+            self.plot["sample_value"].append(sample_value)
+
+    def get_intervals(self, mean, variance):
+        return zip([mean, mean - variance], ["blue", "red"])
+
+    def make(self):
+        fig = px.line(self.plot, x="sample_index", y="sample_value", facet_row="source", facet_col="block_index")
+        sources = list(self.lines.keys())
+        for source, source_lines in self.lines.items():
+            for block_index, (variance, mean) in source_lines.items():
+                source_index = sources.index(source)
+                intervals = self.get_intervals(mean, variance)
+                for y_value, color in intervals:
+                    fig.add_hline(
+                        y=y_value,
+                        line_dash="dash",
+                        line_color=color,
+                        line_width=0.5,
+                        row=source_index,
+                        col=block_index + 1,
+                    )
+        return fig
+
+
