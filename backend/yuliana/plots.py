@@ -57,3 +57,29 @@ class KeyInspectionPlot:
 
     def make(self):
         return px.line(self.plot, x="bit_index", y="bit_value", facet_row="key_index", line_shape="hv")
+
+
+class PreprocessingInspectionPlot:
+    """Plot to inspect what the different steps of preprocessing does."""
+
+    def __init__(self):
+        self.plot = {
+            "stage": [],
+            "value": [],
+            "source": [],
+            "index": [],
+        }
+
+    def add_signal(self, samples, stage, source):
+        for index, value in enumerate(samples):
+            self.plot["stage"].append(stage)
+            self.plot["source"].append(source)
+            self.plot["index"].append(index)
+            self.plot["value"].append(value)
+
+    def add_signals(self, gw, node, stage):
+        self.add_signal(gw, stage, "gw")
+        self.add_signal(node, stage, "node")
+
+    def make(self):
+        return px.line(self.plot, x="index", y="value", color="source", facet_col="stage")
