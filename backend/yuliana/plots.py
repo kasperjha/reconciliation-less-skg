@@ -37,3 +37,23 @@ class KeyRandomnessTable:
         """Show the plot."""
         fig = self.get_plot()
         fig.show()
+
+class KeyInspectionPlot:
+    """A plot to inspect the bits of one or more secret keys."""
+
+    def __init__(self):
+        self.plot = {"key_index": [], "bit_index": [], "bit_value": []}
+
+    def add_key(self, key_index, key):
+        for bit_index, bit_value in enumerate(key):
+            self.plot["key_index"].append(key_index)
+            self.plot["bit_index"].append(bit_index)
+            self.plot["bit_value"].append(bit_value)
+
+    def add_keys(self, keys):
+        """Add multiple keys at once. Key index is taken as index of key in iterable."""
+        for key_index, key in enumerate(keys):
+            self.add_key(key_index, key)
+
+    def make(self):
+        return px.line(self.plot, x="bit_index", y="bit_value", facet_row="key_index", line_shape="hv")
