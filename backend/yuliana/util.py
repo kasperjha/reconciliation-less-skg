@@ -1,6 +1,7 @@
 import csv
-from math import floor, log
+from math import floor
 from scipy.stats import pearsonr
+import random
 
 from app.repository.datasets import DatasetsRepository
 
@@ -87,13 +88,47 @@ def get_key_length(keys, key_length):
     return new_keys
 
 
+def apply_privacy_amplification(gw_keys, node_keys, key_length):
+    """
+    Privacy amplification implementation using H3 hash method.
+    Communicates the random odd number between node and gw in public channel.
+    """
+
+    def generate_random_odd_number(bit_length):
+        """Generate a random odd number with the specified bit length."""
+        number = random.getrandbits(bit_length)
+        return number | 1  # Ensure the number is odd by setting the least significant bit
+
+    def h3_hash(input_bits, output_length, a):
+        """
+        H3 universal hash function.
+
+        :param input_bits: String of '0's and '1's
+        :param output_length: Desired length of the output in bits
+        :param a: Random odd number used as the hash function parameter
+        :return: Hashed output as a string of '0's and '1's
+        """
+        # Convert input_bits to an integer
+        x = int(input_bits, 2)
+
+        # Perform the hash computation
+        hashed_value = (a * x) & ((1 << output_length) - 1)
+
+        # Convert the result back to a bit string
+        return format(hashed_value, f"0{output_length}b")
+
+    assert len(gw_keys) == len(node_keys)
+    random_numbers = [generate_random_odd_number(key_length) for index in range(len(gw_keys))]
+    gw_keys = [h3_hash(key, key_length, a) for a, key in zip(random_numbers, gw_keys)]
+    node_keys = [h3_hash(key, key_length, a) for a, key in zip(random_numbers, node_keys)]
+    return gw_keys, node_keys
+
+
 def apply_quantisation(gw, node, method, block_size, target_key_length):
     gw_material = "".join([method(block) for block in get_blocks(gw, block_size)])
     node_material = "".join([method(block) for block in get_blocks(node, block_size)])
-    print(len(gw_material))
     gw_keys = make_keys(gw_material, target_key_length)
     node_keys = make_keys(node_material, target_key_length)
-    print(len(gw_keys[0]))
     return gw_keys, node_keys
 
 
