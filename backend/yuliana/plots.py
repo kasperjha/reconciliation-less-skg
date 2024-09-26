@@ -1,6 +1,9 @@
+from typing import override
 from plotly.subplots import make_subplots
 from pandas import DataFrame
 import plotly.graph_objects as go
+from plotly import express as px
+import numpy as np
 
 
 class KeyRandomnessTable:
@@ -20,7 +23,7 @@ class KeyRandomnessTable:
             self.tables[dataset]["test"].append(test)
         self.tables[dataset][key_index].append(round(alpha, self.num_decimals))
 
-    def make_plot(self):
+    def make(self):
         """Get a copy of the final plot instance."""
         specs = [[{"type": "table"}], [{"type": "table"}]]
         fig = make_subplots(rows=len(self.tables.keys()), cols=1, specs=specs)
@@ -32,11 +35,8 @@ class KeyRandomnessTable:
             fig.add_trace(table_fig, row=row, col=1)
             row += 1
         fig.update_layout(title_text=f"Randomness results for datasets: {list(self.tables.keys())}")
+        return fig
 
-    def show(self):
-        """Show the plot."""
-        fig = self.get_plot()
-        fig.show()
 
 class KeyInspectionPlot:
     """A plot to inspect the bits of one or more secret keys."""
