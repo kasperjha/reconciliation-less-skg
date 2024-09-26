@@ -1,4 +1,13 @@
-from yuliana.util import apply_preprocessing, get_blocks, load_data
+from yuliana.plots import KeyInspectionPlot, QuantisationIntervalPlot, QuantisationIntervalPlotCorrected
+from yuliana.util import (
+    apply_preprocessing,
+    apply_quantisation,
+    get_agreed_keys,
+    get_bdr,
+    get_blocks,
+    load_data,
+    preprocess_signal,
+)
 import plotly.express as px
 import numpy as np
 
@@ -10,45 +19,29 @@ def inspect_quantisation(
     preprocessing_block_size,
     quantisation_block_size,
     target_key_length,
+    use_corrected,
 ):
     gw, node = load_data(dataset)
     gw, node = apply_preprocessing(gw, node, preprocessing_methods, preprocessing_block_size)
     blocks = zip(get_blocks(gw, preprocessing_block_size), get_blocks(node, preprocessing_block_size))
 
-    plot = {
-        "index": [],
-        "block_index": [],
-        "value": [],
-        "source": [],
-    }
-
-    gw_lines = []
-    node_lines = []
-
-    def add_signal(block_index, signal, source):
-        for index, value in enumerate(signal):
-            plot["index"].append(index)
-            plot["block_index"].append(block_index)
-            plot["value"].append(value)
-            plot["source"].append(source)
+    interval_plot = QuantisationIntervalPlotCorrected() if use_corrected else QuantisationIntervalPlot()
 
     for block_index, (gw_block, node_block) in enumerate(blocks):
-        add_signal(block_index, gw_block, "gw")
-        gw_lines.append((np.var(gw_block), np.mean(gw_block)))
-        add_signal(block_index, node_block, "node")
-        node_lines.append((np.var(node_block), np.mean(node_block)))
+        interval_plot.add_signal("gw", block_index, gw_block)
+        interval_plot.add_signal("node", block_index, node_block)
 
-    fig = px.line(plot, x="index", y="value", facet_row="source", facet_col="block_index")
+    fig = interval_plot.make()
+    fig.update_layout({"title": f"Quantiastion intervals on blocks of {dataset}"})
+    fig.show()
 
-    def add_line(var, mean, source, block_index):
-        row = 0 if source == "gw" else 1
-        fig.add_hline(y=mean - var, line_dash="dash", line_color="blue", line_width=0.5, row=row, col=block_index + 1)
-        fig.add_hline(y=mean, line_dash="dash", line_color="red", line_width=0.5, row=row, col=block_index + 1)
-        fig.add_hline(y=mean + var, line_dash="dash", line_color="green", line_width=0.5, row=row, col=block_index + 1)
+    key_plot = KeyInspectionPlot()
 
-    for block_index, (var, mean) in enumerate(gw_lines):
-        add_line(var, mean, "gw", block_index)
-    for block_index, (var, mean) in enumerate(node_lines):
-        add_line(var, mean, "node", block_index)
+    gw_keys, node_keys = apply_quantisation(gw, node, quantisation_method, quantisation_block_size, target_key_length)
+    candidates = get_agreed_keys(gw_keys, node_keys)
 
+    key_plot.add_keys(candidates)
+
+    fig = key_plot.make()
+    fig.update_layout({"title": f"Keys with BDR=0 from {dataset}"})
     fig.show()
