@@ -46,6 +46,7 @@ def preprocessing_dataset_blocksize_analysis(datasets, methods, block_sizes):
         color="stage",
         title="Correlation after processing with multiple block sizes.",
         barmode="group",
+        range_y=[-1, 1],
     )
     fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
     fig.show()
@@ -97,6 +98,7 @@ def preprocess_block_correlation_analysis(datasets, methods, block_size):
         title=f"Block level correlation ({block_size}bit block size)",
         range_x=[-1, 1],
         nbins=20,
+        barmode="group",
     )
     fig.update_layout(legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01))
     fig.show()
